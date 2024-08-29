@@ -32,6 +32,8 @@ def parse_doxygen_xml(xml_file):
 
                 # Convert the codeline's text to a single string, replacing <sp/> with spaces
                 text = ' '.join([t if t != '<sp/>' else ' ' for t in codeline.itertext()])
+
+                text = remove_access_specifiers_and_return_type(text)
                 text = remove_attributes(text)  # Remove attributes such as [Range(...)], [SerializeField]
 
                 if 'public' in text:
@@ -52,6 +54,19 @@ def parse_doxygen_xml(xml_file):
                     extracted_info["member_variables"].append(f"{access_specifier} {name}")
 
     return extracted_info
+
+def remove_access_specifiers_and_return_type(text):
+    """
+    public, protected, private 등의 접근 지정자 및 함수의 반환형을 텍스트에서 제거합니다.
+    """
+    # 접근 지정자 제거
+    text = re.sub(r'\b(public|protected|private|static|override|virtual|abstract)\b', '', text).strip()
+    
+    # 함수 반환형을 제거
+    # 이 패턴은 함수 시그니처의 시작 부분에 오는 모든 단어를 제거합니다.
+    text = re.sub(r'^\b(?:\w+|void)\b\s+', '', text).strip()
+    
+    return text
 
 def remove_attributes(text):
     """
