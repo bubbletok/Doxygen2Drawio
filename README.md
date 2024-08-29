@@ -18,7 +18,7 @@ Support with ChatGPT
 2. Run **doxygen2drawio.py**
 3. See drawio folder
 
-You can change bWithType variable to false not to show return type.
+You can change bWithType variable to false to hide the return type.
 
 You can just drag & drop the .drawio file to the drawio
 
