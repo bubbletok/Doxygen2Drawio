@@ -46,10 +46,12 @@ def parse_doxygen_xml(xml_file):
             ref_element = codeline.find(".//ref")
             if ref_element is not None:
                 name = ref_element.text.strip()
-                print(name)
                 # Extract the full text for the current codeline
-                text = ' '.join(codeline.itertext())
 
+                # Convert the codeline's text to a single string, replacing <sp/> with spaces
+                text = ' '.join([t if t != '<sp/>' else ' ' for t in codeline.itertext()])
+                text = remove_attributes(text)  # Remove attributes such as [Range(...)], [SerializeField]
+                text = remove_access_specifiers_and_return_type(text)
                 # Determine the access specifier
                 access_specifier = ''
                 if 'public' in text:
@@ -67,12 +69,50 @@ def parse_doxygen_xml(xml_file):
                 is_function = '(' in text and ')' in text
                 if is_function:
                     # For functions, add the return type in the function description
-                    extracted_info["member_functions"].append(f"{access_specifier} {name} : {type_info}")
+                    function_signature = extract_function_signature(text)
+                    extracted_info["member_functions"].append(f"{access_specifier} {function_signature} : {type_info}")
                 else:
                     # Include type information for variables
                     extracted_info["member_variables"].append(f"{access_specifier} {name} : {type_info}")
 
     return extracted_info
+
+
+def remove_access_specifiers_and_return_type(text):
+    """
+    public, protected, private 등의 접근 지정자 및 함수의 반환형을 텍스트에서 제거합니다.
+    """
+    # 접근 지정자 제거
+    text = re.sub(r'\b(public|protected|private|static|override|virtual|abstract)\b', '', text).strip()
+    
+    # 함수 반환형을 제거
+    # 이 패턴은 함수 시그니처의 시작 부분에 오는 모든 단어를 제거합니다.
+    text = re.sub(r'^\b(?:\w+|void)\b\s+', '', text).strip()
+    
+    return text
+
+def remove_attributes(text):
+    """
+    Removes attributes like [Range(...)] and [SerializeField] from the code line text.
+    
+    Args:
+    - text (str): The text containing attributes.
+    
+    Returns:
+    - str: The text without attributes.
+    """
+    # Remove anything in square brackets
+    text = re.sub(r'\[.*?\]', '', text)
+    return text.strip()
+
+def extract_function_signature(text):
+    match = re.search(r'\b(\w+[\w\s]*\w+)\s*\(([^)]*)\)', text)
+    if match:
+        function_name = match.group(1).strip()
+        parameters = match.group(2).strip()
+        parameters = re.sub(r'\[(.*?)\]', lambda m: '[' + m.group(1).replace(',', '') + ']', parameters)
+        return f"{function_name}({parameters})"
+    return text
 
 def parse_all_xml_in_folder(folder_path):
     results = []
