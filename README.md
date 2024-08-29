@@ -12,11 +12,11 @@ Doxygen .xml to Drawio .xml
 You can just drag & drop the .drawio file to the drawio
 
 ## Results
-.txt files are in results folder <br />
+.txt files are in texts folder <br />
 .drawio filed are in drawio folder
 
 ## Dependency
 For install dependencies
 ```
-pip install requirement.txt
+pip install -r requirements.txt
 ```
