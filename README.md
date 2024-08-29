@@ -5,6 +5,7 @@ Doxygen .xml to Drawio .xml
 
 ## Usgae
 ### Yous should create doxygen .xml files first and follow steps
+![image](https://github.com/user-attachments/assets/6b9cca41-f3ba-4e40-aada-6b6c55fabea3)
 1. Add .xml files in xmls folder
 2. Run doxygen2drawio.py
 3. See drawio folder
