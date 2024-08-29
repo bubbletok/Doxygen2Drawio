@@ -1,4 +1,4 @@
-# Doxygen2Drawio
+# Doxygen to Drawio
 
 Python program that convert **Doxygen .xml** file into **Drawio .xml** file
 
