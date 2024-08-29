@@ -5,7 +5,7 @@ import re
 def extract_type_info(text):
     """
     Extracts the type information from the given text if present.
-    The type is assumed to be enclosed within <sp></sp> tags.
+    Assumes the type is the word following access modifiers like 'private', 'public', etc.
     
     Args:
     - text (str): The text to search for type information.
@@ -13,10 +13,12 @@ def extract_type_info(text):
     Returns:
     - str: The extracted type information or 'unknown' if not found.
     """
-    type_match = re.search(r'<sp></sp>(\w+)', text)
-    if type_match:
-        return type_match.group(1)
+    # Regex pattern to match the type information after access modifiers
+    match = re.search(r'\b(?:private|protected|public|internal|protected\s+internal|private\s+protected)\s+(\w+[\w\s]*\w+)', text)
+    if match:
+        return match.group(1).strip()
     return 'unknown'
+
 
 def parse_doxygen_xml(xml_file):
     try:
@@ -42,7 +44,7 @@ def parse_doxygen_xml(xml_file):
             ref_element = codeline.find(".//ref")
             if ref_element is not None:
                 name = ref_element.text.strip()
-
+                print(name)
                 # Extract the full text for the current codeline
                 text = ''.join(codeline.itertext())
 
@@ -52,11 +54,10 @@ def parse_doxygen_xml(xml_file):
                     access_specifier = '+'
                 elif 'protected' in text:
                     access_specifier = '#'
-                elif 'private' in text:
-                    access_specifier = '-'
                 else:
-                    access_specifier = '?'
+                    access_specifier = '-'
 
+                print(text)
                 # Extract the type information
                 type_info = extract_type_info(text)
 
@@ -88,7 +89,7 @@ def parse_all_xml_in_folder(folder_path):
 
 def get_sorted_member_info(extracted_info):
     # Define the order of access specifiers
-    access_order = {'+': 1, '#': 2, '-': 3}  # Add '?' for unknown access specifiers
+    access_order = {'+': 1, '#': 2, '-': 3}
 
     # Sort functions and variables by access specifier and then by name
     sorted_functions = sorted(
