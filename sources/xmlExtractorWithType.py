@@ -4,20 +4,22 @@ import re
 
 def extract_type_info(text):
     """
-    Extracts the type information from the given text if present.
-    Assumes the type is the word following access modifiers like 'private', 'public', etc.
-    
-    Args:
-    - text (str): The text to search for type information.
-    
-    Returns:
-    - str: The extracted type information or 'unknown' if not found.
+    함수 시그니처에서 반환형만 추출합니다.
     """
-    # Regex pattern to match the type information after access modifiers
-    match = re.search(r'\b(?:private|protected|public|internal|protected\s+internal|private\s+protected)\s+(\w+[\w\s]*\w+)', text)
+    # 접근 지정자와 기타 키워드를 제거한 후
+    # 반환형을 찾습니다.
+    
+    # 접근 지정자 제거
+    text = re.sub(r'\b(public|protected|private|static|override|virtual|abstract)\b', '', text).strip()
+    print(text)
+    
+    # 함수 시그니처의 시작 부분에서 반환형을 추출
+    # 반환형은 첫 번째 단어로 가정
+    match = re.match(r'^\b(?:\w+|void)\b', text)
+    
     if match:
-        return match.group(1).strip()
-    return 'unknown'
+        return match.group(0)
+    return 'void'
 
 
 def parse_doxygen_xml(xml_file):
@@ -46,7 +48,7 @@ def parse_doxygen_xml(xml_file):
                 name = ref_element.text.strip()
                 print(name)
                 # Extract the full text for the current codeline
-                text = ''.join(codeline.itertext())
+                text = ' '.join(codeline.itertext())
 
                 # Determine the access specifier
                 access_specifier = ''
