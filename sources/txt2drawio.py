@@ -56,7 +56,7 @@ def create_class_diagram(file_path, output_folder):
     ET.SubElement(root, 'mxCell', {'id': '0'})
     ET.SubElement(root, 'mxCell', {'id': '1', 'parent': '0'})
 
-    class_name, member_vars, member_funcs = extract_class_info(file_path)
+    class_name, member_funcs, member_vars = extract_class_info(file_path)
 
     # Class Box
     class_box = ET.SubElement(root, 'mxCell', {
