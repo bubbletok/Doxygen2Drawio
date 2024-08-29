@@ -1,0 +1,2 @@
+regex==2024.7.24
+elementpath==4.4.0
