@@ -130,7 +130,7 @@ def create_class_diagram(file_path, output_folder):
     # XML 트리 생성 및 저장
     indent(mxfile)  # 적용된 들여쓰기
     
-    output_file_name = os.path.basename(file_path).replace('.txt', '_Diagram.xml')
+    output_file_name = os.path.basename(file_path).replace('.txt', '_Diagram.drawio')
     output_file_path = os.path.join(output_folder, output_file_name)
 
     tree = ET.ElementTree(mxfile)
