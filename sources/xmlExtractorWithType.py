@@ -11,7 +11,7 @@ def extract_type_info(text):
     
     # 접근 지정자 제거
     text = re.sub(r'\b(public|protected|private|static|override|virtual|abstract)\b', '', text).strip()
-    print(text)
+    # print(text)
     
     # 함수 시그니처의 시작 부분에서 반환형을 추출
     # 반환형은 첫 번째 단어로 가정
@@ -51,7 +51,7 @@ def parse_doxygen_xml(xml_file):
                 # Convert the codeline's text to a single string, replacing <sp/> with spaces
                 text = ' '.join([t if t != '<sp/>' else ' ' for t in codeline.itertext()])
                 text = remove_attributes(text)  # Remove attributes such as [Range(...)], [SerializeField]
-                text = remove_access_specifiers_and_return_type(text)
+
                 # Determine the access specifier
                 access_specifier = ''
                 if 'public' in text:
@@ -61,18 +61,22 @@ def parse_doxygen_xml(xml_file):
                 else:
                     access_specifier = '-'
 
-                print(text)
+                #print(text)
                 # Extract the type information
                 type_info = extract_type_info(text)
+
+                # text = remove_access_specifiers_and_return_type(text)
 
                 # Check if it is a function or a variable
                 is_function = '(' in text and ')' in text
                 if is_function:
                     # For functions, add the return type in the function description
                     function_signature = extract_function_signature(text)
+                    function_signature = remove_access_specifiers_and_return_type(function_signature)
                     extracted_info["member_functions"].append(f"{access_specifier} {function_signature} : {type_info}")
                 else:
                     # Include type information for variables
+                    variable_signature = extract_function_signature(text)
                     extracted_info["member_variables"].append(f"{access_specifier} {name} : {type_info}")
 
     return extracted_info
