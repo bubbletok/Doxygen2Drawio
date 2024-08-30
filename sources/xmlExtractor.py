@@ -33,9 +33,10 @@ def parse_doxygen_xml(xml_file):
                 # Convert the codeline's text to a single string, replacing <sp/> with spaces
                 text = ' '.join([t if t != '<sp/>' else ' ' for t in codeline.itertext()])
 
-                text = remove_access_specifiers_and_return_type(text)
+                
                 text = remove_attributes(text)  # Remove attributes such as [Range(...)], [SerializeField]
-
+                #text = remove_access_specifiers_and_return_type(text)
+                
                 if 'public' in text:
                     access_specifier = '+'
                 elif 'protected' in text:
@@ -49,6 +50,7 @@ def parse_doxygen_xml(xml_file):
                 # Check if it is a function or a variable
                 if '(' in text or ')' in text:
                     function_signature = extract_function_signature(text)
+                    function_signature = remove_access_specifiers_and_return_type(function_signature)
                     extracted_info["member_functions"].append(f"{access_specifier} {function_signature}")
                 else:
                     extracted_info["member_variables"].append(f"{access_specifier} {name}")
