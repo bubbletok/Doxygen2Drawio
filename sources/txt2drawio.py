@@ -1,6 +1,9 @@
 import xml.etree.ElementTree as ET
 import os
 import shutil
+
+sub_width = '500'
+
 # XML 구조 정의
 def create_class_diagram(file_path, output_folder):
     def indent(elem, level=0):
@@ -69,7 +72,7 @@ def create_class_diagram(file_path, output_folder):
     ET.SubElement(class_box, 'mxGeometry', {
         'x': '480',
         'y': '100',
-        'width': '300',
+        'width': sub_width,
         'height': '500',
         'as': 'geometry'
     })
@@ -86,7 +89,7 @@ def create_class_diagram(file_path, output_folder):
         }).append(
             ET.Element('mxGeometry', {
                 'y': str(y_position),
-                'width': '300',
+                'width': sub_width,
                 'height': '26',
                 'as': 'geometry'
             })
@@ -102,7 +105,7 @@ def create_class_diagram(file_path, output_folder):
     }).append(
         ET.Element('mxGeometry', {
             'y': str(y_position),
-            'width': '300',
+            'width': sub_width,
             'height': '8',
             'as': 'geometry'
         })
@@ -120,7 +123,7 @@ def create_class_diagram(file_path, output_folder):
         }).append(
             ET.Element('mxGeometry', {
                 'y': str(y_position),
-                'width': '300',
+                'width': sub_width,
                 'height': '26',
                 'as': 'geometry'
             })
