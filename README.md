@@ -9,7 +9,7 @@ It creates a class diagram for each class script one by one
 Support with ChatGPT
 
 
-## Usgae
+## Usage
 ### Yous should create doxygen .xml files first and follow steps after then.
 ![image](https://github.com/user-attachments/assets/6b9cca41-f3ba-4e40-aada-6b6c55fabea3)
 1. Add .xml files in xmls folder.<br />
