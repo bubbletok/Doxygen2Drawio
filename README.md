@@ -13,7 +13,7 @@ Support with ChatGPT
 ### Yous should create doxygen .xml files first and follow steps after then.
 ![image](https://github.com/user-attachments/assets/6b9cca41-f3ba-4e40-aada-6b6c55fabea3)
 1. Add .xml files in xmls folder.<br />
-   **Not use** the file which ends with "~.xml", but **use the file which ends with "~cs.xml"**<br />
+   **Not use** the file which ends with "~.xml", but **use the file which ends with "~cs.xml"**(C#)<br />
    For example, "test_8cs.xml"
 2. Run **doxygen2drawio.py**
 3. See drawio folder
